@@ -18,15 +18,17 @@ url_fil = f"https://api.telegram.org/bot{TOKEN}/sendDocument"
 
 
 #Aksjer
-aksjer.kjor_aksjerscan()
-valgfri_tekst = f"Live Stock Prices - Close Values\nTime: {nåtid}"
-data = {
-    "chat_id": CHAT_ID,
-    "text": valgfri_tekst
-}
-requests.post(url, data=data)
-with open("aksjerFil.json", "rb") as fil:
-    requests.post(url_fil, data={"chat_id": CHAT_ID}, files={"document": fil})
+#Aksjer
+pdf = aksjer.kjor_aksjerscan()
+if pdf is None:
+    requests.post(url, data={"chat_id": CHAT_ID, "text": "Fikk ingen kurser fra Yahoo Finance."})
+else:
+    with open(pdf, "rb") as fil:
+        requests.post(
+            url_fil,
+            data={"chat_id": CHAT_ID, "caption": f"📈 Aksjerapport {nåtid}"},
+            files={"document": fil},
+        )
 
 # Vær for imorgen
 data = {
