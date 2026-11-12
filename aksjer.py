@@ -18,6 +18,10 @@ aksjerselskaper = {
     "Tesla": "TSLA",
     "Amazon": "AMZN",
     "Google": "GOOGL",
+    "Equinor": "EQNR",
+    "Kongsberg Gruppen": "KOG.OL",
+    "Aker BP": "AKRBP.OL",
+    "DNB Bank": "DNB.OL"
 }
 
 
@@ -67,7 +71,7 @@ def lag_pdf(nye, gamle, filnavn="aksjerapport.pdf"):
         topMargin=2 * cm, bottomMargin=2 * cm,
         title="Aksjerapport",
     )
-    
+
     tittel = ParagraphStyle("tittel", fontName="Helvetica-Bold",
                             fontSize=24, leading=30, textColor=moerk, spaceAfter=6)
     under = ParagraphStyle("under", fontName="Helvetica",
