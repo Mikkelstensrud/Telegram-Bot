@@ -21,7 +21,8 @@ aksjerselskaper = {
     "Equinor": "EQNR",
     "Kongsberg Gruppen": "KOG.OL",
     "Aker BP": "AKRBP.OL",
-    "DNB Bank": "DNB.OL"
+    "DNB Bank": "DNB.OL",
+    "Kron Indeks Global": "0P0001NZPA.IR"
 }
 
 
@@ -29,7 +30,7 @@ def hent_kurser():
     kurser = {}
     for navn, ticker in aksjerselskaper.items():
         try:
-            historikk = yf.Ticker(ticker).history(period="1d")
+            historikk = yf.Ticker(ticker).history(period="5d")
             if not historikk.empty:
                 kurser[navn] = round(float(historikk["Close"].iloc[-1]), 2)
         except Exception as feil:
@@ -55,6 +56,14 @@ def lagre(data):
 def norsk_tall(tall):
     return f"{tall:,.2f}".replace(",", " ").replace(".", ",")
 
+VALUTA = {"Kron Indeks Global": "NOK"}
+
+
+def kurs_tekst(navn, kurs):
+    valuta = VALUTA.get(navn, "USD")
+    if valuta == "USD":
+        return f"${norsk_tall(kurs)}"
+    return f"{norsk_tall(kurs)} {valuta}"
 
 def lag_pdf(nye, gamle, filnavn="aksjerapport.pdf"):
     tid = datetime.now().strftime("%d.%m.%Y kl. %H:%M")
@@ -79,10 +88,10 @@ def lag_pdf(nye, gamle, filnavn="aksjerapport.pdf"):
     bunn = ParagraphStyle("bunn", fontName="Helvetica",
                           fontSize=9, leading=12, textColor=graa)
 
-    data = [["Selskap", "Ticker", "Kurs (USD)", "Endring"]]
+    data = [["Selskap", "Ticker", "Kurs", "Endring"]]
     farger = []
 
-    rader = sorted(nye.items(), key=lambda x: x[1], reverse=True)
+    rader = [(navn, nye[navn]) for navn in aksjerselskaper if navn in nye]
     for i, (navn, kurs) in enumerate(rader, start=1):
         if gamle.get(navn):
             endring = (kurs - gamle[navn]) / gamle[navn] * 100
@@ -91,9 +100,9 @@ def lag_pdf(nye, gamle, filnavn="aksjerapport.pdf"):
         else:
             tekst = "–"
             farger.append(("TEXTCOLOR", (3, i), (3, i), graa))
-        data.append([navn, aksjerselskaper[navn], f"${norsk_tall(kurs)}", tekst])
+        data.append([navn, aksjerselskaper[navn], kurs_tekst(navn, kurs), tekst])
 
-    tabell = Table(data, colWidths=[6 * cm, 3 * cm, 4 * cm, 4 * cm])
+    tabell = Table(data, colWidths=[5.5 * cm, 4 * cm, 4 * cm, 3.5 * cm])
     tabell.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), moerk),
         ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),

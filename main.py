@@ -18,7 +18,6 @@ url_fil = f"https://api.telegram.org/bot{TOKEN}/sendDocument"
 
 
 #Aksjer
-#Aksjer
 pdf = aksjer.kjor_aksjerscan()
 if pdf is None:
     requests.post(url, data={"chat_id": CHAT_ID, "text": "Fikk ingen kurser fra Yahoo Finance."})
