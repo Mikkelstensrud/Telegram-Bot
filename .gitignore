@@ -1,8 +1,5 @@
 __pycache__
-.python-version
 aksjerFil.json
-pyproject.toml
-README.md
-uv.lock
 .env
 aksjerapport.pdf
+.venv

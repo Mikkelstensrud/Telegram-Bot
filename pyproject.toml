@@ -1,0 +1,12 @@
+[project]
+name = "bot-varslinger"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "python-dotenv>=1.2.4",
+    "reportlab>=5.1.0",
+    "requests>=2.34.2",
+    "yfinance>=1.8.0",
+]
