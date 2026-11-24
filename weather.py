@@ -67,7 +67,7 @@ def main():
         dato, timer = hent_vaer_i_morgen()
     except requests.RequestException as feil:
         print("Kunne ikke hente værdata:", feil)
-        return
+        return "Kunne ikke hente værmeldingen akkurat nå."
 
     melding = f"Værmelding for Oslo, {dato}, kl. {FRA_TIME:02d}-{TIL_TIME:02d}"
     for tid, kode in timer:
