@@ -1,7 +1,7 @@
 [project]
 name = "bot-varslinger"
 version = "0.1.0"
-description = "Add your description here"
+description = "Telegram-bot som sender daglige rapporter"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
